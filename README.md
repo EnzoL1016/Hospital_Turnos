@@ -1,101 +1,88 @@
-# Sistema de Gestión de Turnos Médicos 🏥
+# Sistema de Gestión de Turnos Médicos
 
-¡Bienvenido! Este es un sistema integral de gestión de turnos médicos diseñado para modernizar y simplificar la interacción entre pacientes, profesionales de la salud y administradores. La plataforma ofrece una experiencia de usuario fluida y eficiente, desde la reserva de un turno hasta la gestión de agendas completas.
+Aplicación full-stack para la gestión de turnos médicos, construida con Django y React. El sistema proporciona flujos de trabajo distintos para pacientes, profesionales y administradores para optimizar la reserva, gestión y seguimiento de citas.
 
-Este proyecto fue desarrollado con un stack tecnológico moderno, enfocándose en el rendimiento, la escalabilidad y una experiencia de usuario de primer nivel.
+## Estado del Proyecto
 
----
-## ✨ Características Principales
-
-El sistema está diseñado con flujos de trabajo específicos para cada tipo de usuario:
-
-### Para Pacientes 👤
-* **Dashboard Personal:** Una vista principal con acceso rápido a todas las funciones.
-* **Búsqueda y Reserva de Turnos:** Filtra profesionales por especialidad y consulta sus horarios disponibles para agendar una cita en tiempo real.
-* **Gestión de Turnos:** Visualiza tus próximos turnos y tu historial (citas asistidas, no asistidas o canceladas).
-* **Cancelación de Turnos:** Cancela tus citas con un solo clic a través de un diálogo de confirmación amigable.
-* **Gestión de Inasistencias:** Justifica tus inasistencias pasadas directamente desde tu panel.
-
-### Para Profesionales 🩺
-* **Dashboard de Gestión:** Un centro de control para acceder a las agendas y ver los turnos del día.
-* **Gestión de Agenda:** Visualiza tus turnos reservados, disponibles y el historial de citas.
-* **Control de Asistencia:** Marca el estado de cada turno como "Asistió" o "No Asistió" de forma sencilla.
-* **Evaluación de Justificaciones:** Revisa y gestiona las justificaciones enviadas por los pacientes para sus inasistencias.
-
-### Para Administradores (WIP) 🛠️
-* Gestión completa de profesionales (alta, baja, modificación).
-* Supervisión de agendas y turnos de toda la clínica.
-* Generación de reportes y estadísticas.
+Este proyecto se encuentra actualmente en una etapa de **MVP (Producto Mínimo Viable)**. Las características principales para los flujos de paciente y profesional están implementadas y funcionales. El panel de administración y las funcionalidades avanzadas están en desarrollo activo.
 
 ---
-## 🚀 Stack Tecnológico
+## Features
 
-Este proyecto está dividido en un frontend desacoplado y un backend robusto.
+#### Flujo de Paciente
+* Búsqueda de profesionales por especialidad y visualización de horarios disponibles.
+* Reserva, consulta y cancelación de turnos.
+* Gestión y justificación de inasistencias pasadas.
+* Dashboard personal con accesos directos a las acciones principales.
 
-* **Frontend (React):**
-    * **Framework:** React con Vite.js
-    * **Lenguaje:** TypeScript
-    * **Gestión de Estado:** Zustand
-    * **Fetching de Datos y Caché:** TanStack Query (React Query)
-    * **Estilos:** Tailwind CSS
-    * **Notificaciones:** React Hot Toast
+#### Flujo de Profesional
+* Visualización y gestión de agenda de turnos por día/mes.
+* Seguimiento de asistencia de pacientes (marcar como "Asistió" o "No Asistió").
+* Revisión y gestión de las justificaciones de inasistencias enviadas por los pacientes.
 
-* **Backend (Django):**
-    * **Framework:** Django
-    * **API:** Django REST Framework (DRF)
-    * **Base de Datos:** SQLite (para desarrollo, fácilmente escalable a PostgreSQL)
+#### Flujo de Administrador (En Desarrollo)
+* Operaciones CRUD para profesionales.
+* Supervisión global de agendas.
+* Generación de reportes.
 
 ---
-## 🏁 Guía de Inicio Rápido (Getting Started)
+## Tech Stack
 
-Para correr este proyecto en tu máquina local, sigue estos pasos:
+| Área    | Tecnología                                       |
+| :------ | :----------------------------------------------- |
+| **Backend** | Django, Django REST Framework, SQLite3 (dev)     |
+| **Frontend** | React, TypeScript, Vite, TanStack Query, Zustand |
+| **Styling** | Tailwind CSS                                     |
+| **UI/UX** | React Hot Toast, Headless UI (implícito)         |
 
-### Prerrequisitos
-* Node.js y npm
-* Python y pip
+---
+## Setup para Desarrollo Local
+
+Para levantar el entorno en una máquina local, clona ambos repositorios y sigue las instrucciones para cada uno.
+
+#### Prerrequisitos
+* Node.js & npm
+* Python & pip
 * Git
 
-### 1. Configuración del Backend (Django)
+### 1. Backend (Django)
 
 ```bash
-# 1. Clona el repositorio del backend
+# 1. Clonar y moverse al directorio
 git clone <URL_DEL_REPO_BACKEND>
 cd <nombre-de-la-carpeta-backend>
 
-# 2. Crea y activa un entorno virtual
+# 2. Crear y activar el entorno virtual
 python -m venv venv
-# En Windows: venv\Scripts\activate
-# En macOS/Linux: source venv/bin/activate
+# Windows: venv\Scripts\activate
+# macOS/Linux: source venv/bin/activate
 
-# 3. Instala las dependencias
+# 3. Instalar dependencias
 pip install -r requirements.txt
 
-# 4. Aplica las migraciones de la base de datos
+# 4. Ejecutar migraciones
 python manage.py migrate
 
-# 5. Inicia el servidor
+# 5. Levantar el servidor de desarrollo
 python manage.py runserver
 ```
-Tu backend estará corriendo en `http://127.0.0.1:8000`.
+El backend estará disponible en `http://127.0.0.1:8000`.
 
-### 2. Configuración del Frontend (React)
+### 2. Frontend (React)
 
 ```bash
-# 1. Clona el repositorio del frontend en una nueva terminal
+# 1. Clonar y moverse al directorio (en una nueva terminal)
 git clone <URL_DEL_REPO_FRONTEND>
 cd <nombre-de-la-carpeta-frontend>
 
-# 2. Instala las dependencias
+# 2. Instalar dependencias
 npm install
 
-# 3. Crea un archivo .env en la raíz y configura la URL de la API
-echo "VITE_API_BASE_URL=[http://127.0.0.1:8000/api](http://127.0.0.1:8000/api)" > .env
+# 3. Configurar variables de entorno
+# Crea un archivo .env en la raíz del proyecto y añade la siguiente línea:
+VITE_API_BASE_URL=[http://127.0.0.1:8000/api](http://127.0.0.1:8000/api)
 
-# 4. Inicia la aplicación
+# 4. Levantar el servidor de desarrollo
 npm run dev
 ```
-Tu frontend estará disponible en `http://localhost:5173`.
-
----
-
-¡Y listo! Ya puedes explorar la aplicación. ¡Gracias por visitar el proyecto!
+El frontend estará disponible en `http://localhost:5173`.
