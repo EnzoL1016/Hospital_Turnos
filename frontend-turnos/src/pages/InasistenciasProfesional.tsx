@@ -1,4 +1,3 @@
-// src/pages/InasistenciasProfesional.tsx
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
@@ -7,7 +6,7 @@ import api from "../api/api";
 import FilterBar from "./../components/FilterBar";
 import ConfirmationModal from "../components/ConfirmationModal";
 
-// --- Interfaces y Helpers ---
+
 interface Inasistencia {
   id: number;
   turno: number;
