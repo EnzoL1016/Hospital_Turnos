@@ -6,4 +6,4 @@ from core.views.IsAdmin import IsAdmin
 class RegistroProfesionalView(generics.CreateAPIView):
     queryset = Profesional.objects.all()
     serializer_class = RegistroProfesionalSerializer
-    permission_classes = [IsAdmin]  # solo ADMIN
+    permission_classes = [IsAdmin]  
