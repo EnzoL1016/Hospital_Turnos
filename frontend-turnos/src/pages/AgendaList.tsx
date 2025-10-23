@@ -12,7 +12,7 @@ interface Agenda {
   especialidad: string;
 }
 
-// ✅ utilitario para formatear "YYYY-MM-DD" a "Mes Año"
+//para formatear "YYYY-MM-DD" a "Mes Año"
 const formatMonthFromYYYYMMDD = (mesStr: string) => {
   if (!mesStr) return "";
   const parts = mesStr.split("-");
