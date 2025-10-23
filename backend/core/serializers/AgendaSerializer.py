@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models import Agenda, Turno, Profesional # Asegúrate que los modelos se importen
+from ..models import Agenda, Turno, Profesional 
 from datetime import datetime, timedelta
 import calendar
 
@@ -17,7 +17,6 @@ class AgendaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Agenda
-        # Asegúrate de que los campos coincidan con tu modelo actual
         fields = [
             'id', 'profesional', 'mes', 'horario_inicio', 'horario_fin', 
             'duracion_turno', 'dias_no_disponibles', 'profesional_nombre', 'especialidad'
@@ -31,24 +30,17 @@ class AgendaSerializer(serializers.ModelSerializer):
         agenda = super().create(validated_data)
         profesional = agenda.profesional
         dias_atencion_bd = profesional.dias_atencion or []
-
-        # --- ¡LA CORRECCIÓN DEFINITIVA! ---
-        # Convertimos los días de la BD a minúsculas para la comparación.
-        # ["LUNES", "MARTES"] -> ["lunes", "martes"]
         dias_atencion = [dia.lower() for dia in dias_atencion_bd]
 
         year, month = agenda.mes.year, agenda.mes.month
         _, last_day = calendar.monthrange(year, month)
         turnos_a_crear = []
-        
-        # Este mapa es para compatibilidad con la lógica anterior, aunque ya no es estrictamente necesario
-        # si tu sistema operativo está en español, lo mantenemos por robustez.
         DAY_MAP_ES = {0: "lunes", 1: "martes", 2: "miercoles", 3: "jueves", 4: "viernes", 5: "sabado", 6: "domingo"}
 
         for day in range(1, last_day + 1):
             fecha = datetime(year, month, day).date()
             
-            # Usamos weekday() que devuelve un número (Lunes=0), que es más fiable
+            #weekday() devuelve un número (Lunes=0)
             nombre_dia = DAY_MAP_ES.get(fecha.weekday())
 
             if nombre_dia in dias_atencion and str(fecha) not in (agenda.dias_no_disponibles or []):
