@@ -11,7 +11,6 @@ class ProfesionalViewSet(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated]
 
-
     def destroy(self, request, *args, **kwargs):
         profesional = self.get_object()
         user = profesional.usuario
