@@ -10,7 +10,7 @@ interface Agenda {
   mes: string; // Formato "YYYY-MM-DD"
 }
 
-// Helper function to get the target agenda ID
+
 const getTargetAgendaId = (agendas: Agenda[] | undefined): number | null => {
   if (!agendas || agendas.length === 0) {
     return null;
@@ -18,9 +18,9 @@ const getTargetAgendaId = (agendas: Agenda[] | undefined): number | null => {
 
   const now = new Date();
   const currentYear = now.getFullYear();
-  const currentMonth = now.getMonth() + 1; // getMonth() is 0-indexed
+  const currentMonth = now.getMonth() + 1; 
 
-  // Find agenda for the current month
+
   const currentAgenda = agendas.find(agenda => {
     const agendaDate = new Date(agenda.mes);
     return agendaDate.getFullYear() === currentYear && agendaDate.getMonth() + 1 === currentMonth;
@@ -30,7 +30,7 @@ const getTargetAgendaId = (agendas: Agenda[] | undefined): number | null => {
     return currentAgenda.id;
   }
 
-  // If no current agenda, find the most recent past one
+
   const pastAgendas = agendas
     .filter(a => new Date(a.mes) < now)
     .sort((a, b) => new Date(b.mes).getTime() - new Date(a.mes).getTime());
@@ -42,13 +42,13 @@ const getTargetAgendaId = (agendas: Agenda[] | undefined): number | null => {
 const DashboardProfesional = () => {
   const user = useAuthStore(state => state.user);
 
-  // --- OPTIMIZATION: Fetching agendas with useQuery ---
+
   const { data: agendas, isLoading } = useQuery<Agenda[], Error>({
     queryKey: ['agendas', 'profesional'],
     queryFn: () => api.get<Agenda[]>("/agendas/").then(res => res.data.results || res.data),
   });
 
-  // useMemo prevents recalculating on every render unless agendas change
+
   const targetAgendaId = useMemo(() => getTargetAgendaId(agendas), [agendas]);
 
   return (
@@ -73,7 +73,7 @@ const DashboardProfesional = () => {
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-            {/* --- Action Card: Manage Agendas --- */}
+           
             <Link to="/profesional/agendas" className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow flex items-center gap-4">
               <div className="bg-blue-100 p-3 rounded-full">
                 <List className="text-blue-600" size={28} />
@@ -84,7 +84,7 @@ const DashboardProfesional = () => {
               </div>
             </Link>
 
-            {/* --- Action Card: Create Agenda --- */}
+         
             <Link to="/profesional/agendas/create" className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow flex items-center gap-4">
               <div className="bg-green-100 p-3 rounded-full">
                 <CalendarPlus className="text-green-600" size={28} />
