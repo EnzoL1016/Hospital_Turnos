@@ -24,7 +24,6 @@ export default function FilterBar({ filters, activeFilter, onFilterChange }: Fil
       red: "bg-red-600 text-white",
       gray: "bg-gray-600 text-white",
     };
-
     return colorMap[color] || "bg-blue-600 text-white";
   };
 
