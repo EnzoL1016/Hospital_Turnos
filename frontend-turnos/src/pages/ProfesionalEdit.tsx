@@ -48,7 +48,7 @@ const ProfesionalEdit = () => {
         duracion_turno: duracionTurno,
         usuario: usuario,
       });
-      // ✅ Redirige a la lista dentro de admin
+     
       navigate("/admin/profesionales/list");
     } catch (err) {
       console.error(err);
