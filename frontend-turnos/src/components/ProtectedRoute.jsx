@@ -4,10 +4,10 @@ import useAuthStore from "../store/authStore";
 const ProtectedRoute = ({ children, roles }) => {
   const { user } = useAuthStore();
 
-  // No hay usuario logueado → redirigir a login
+ 
   if (!user) return <Navigate to="/login" />;
 
-  // Usuario logueado pero no tiene rol permitido → redirigir al home de su rol
+  
   if (roles && !roles.includes(user.role)) {
     switch (user.role) {
       case "ADMIN":
