@@ -1,4 +1,3 @@
-// src/components/ConfirmationModal.tsx
 import Modal from "./Modal";
 
 interface ConfirmationModalProps {
