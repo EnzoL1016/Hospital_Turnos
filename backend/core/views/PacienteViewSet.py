@@ -10,8 +10,8 @@ class PacienteViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        # Solo superuser o rol ADMIN pueden listar pacientes
+      
         if user.is_superuser or getattr(user, "rol", None) == "ADMIN":
             return Paciente.objects.all()
-        # Los demás solo ven su propio paciente
+     
         return Paciente.objects.filter(usuario=user)
