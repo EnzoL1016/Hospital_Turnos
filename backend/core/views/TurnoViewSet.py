@@ -20,7 +20,6 @@ class TurnoViewSet(viewsets.ModelViewSet):
     pagination_class = DefaultPagination
 
     def get_queryset(self):
-        # ... (Este método se mantiene igual, su orden ascendente es correcto para buscar turnos disponibles)
         user = self.request.user
         hoy = now().date()
         qs = Turno.objects.filter(fecha__gte=hoy)
@@ -52,7 +51,6 @@ class TurnoViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=["get"], url_path=r"por-agenda/(?P<agenda_id>[^/.]+)")
     def por_agenda(self, request, agenda_id=None):
-        # ... (Este método también se mantiene igual, el orden ascendente es correcto para la agenda del profesional)
         user = request.user
         hoy = now().date()
         if getattr(user, "rol", None) == "PROFESIONAL" or getattr(user, "rol", None) == "ADMIN":
@@ -64,7 +62,6 @@ class TurnoViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
     def cancelar(self, request, pk=None):
-        # ... (Sin cambios aquí)
         turno = self.get_object()
         user = request.user
         if getattr(user, "rol", None) != "PACIENTE":
@@ -92,17 +89,14 @@ class TurnoViewSet(viewsets.ModelViewSet):
         except Paciente.DoesNotExist:
             return Response({"detail": "No existe un perfil de paciente asociado."}, status=status.HTTP_400_BAD_REQUEST)
         
-        # [CORRECCIÓN 1] Se elimina el filtro de fecha para devolver también el historial
         turnos = Turno.objects.filter(paciente=paciente)
         
-        # [CORRECCIÓN 2] Se añade el segundo criterio de orden por hora descendente
         turnos = turnos.order_by("-fecha", "-hora_inicio")
         
         serializer = self.get_serializer(turnos, many=True)
         return Response(serializer.data)
 
     def partial_update(self, request, *args, **kwargs):
-        # ... (Sin cambios aquí)
         turno = self.get_object()
         user = request.user
         if getattr(user, "rol", None) == "PACIENTE":
@@ -160,7 +154,6 @@ class TurnoViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["patch"], permission_classes=[IsAuthenticated])
     def marcar_inasistencia(self, request, pk=None):
-        # ... (Sin cambios aquí)
         turno = self.get_object()
         user = request.user
         if getattr(user, "rol", None) != "PROFESIONAL":
