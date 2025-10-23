@@ -1,4 +1,3 @@
-// src/pages/DashboardAdmin.tsx
 import useAuthStore from '../store/authStore';
 
 const DashboardAdmin = () => {
