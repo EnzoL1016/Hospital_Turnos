@@ -1,10 +1,8 @@
-// src/types/auth.ts
-
 export interface User {
   id: number;
   username: string;
   role: "ADMIN" | "PROFESIONAL" | "PACIENTE";
-  profesional_id?: number; // 👈 Agregamos el campo opcional
+  profesional_id?: number; 
 }
 
 export interface AuthState {
