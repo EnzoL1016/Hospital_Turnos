@@ -1,4 +1,3 @@
-// src/pages/AdminReportes.tsx
 import React, { useEffect, useState } from "react";
 import api from "../api/api";
 import {
@@ -34,14 +33,12 @@ type ProfesionalAPI = {
   id: number;
   usuario_nombre?: string;
   usuario?: { nombre_completo?: string; username?: string };
-  // otros campos posibles...
 };
 
 type PacienteAPI = {
   id: number;
   nombre_completo?: string;
   usuario?: { nombre_completo?: string; username?: string };
-  // otros campos posibles...
 };
 
 interface Report {
@@ -72,7 +69,6 @@ export default function AdminReportes() {
       setLoading(true);
       setErrorMsg("");
       try {
-        // usamos allSettled para que si una petición falla las otras sigan cargando
         const results = await Promise.allSettled([
           api.get("/reportes/global/"),
           api.get("/profesionales/"),
@@ -91,7 +87,6 @@ export default function AdminReportes() {
           setProfesionales(results[1].value.data);
         } else {
           console.error("Error cargando profesionales:", results[1]);
-          // Si es 403/401 podemos informar al usuario
           if ((results[1] as any).reason?.response?.status === 403) {
             setErrorMsg("No tienes permisos para ver la lista de profesionales.");
           }
@@ -203,7 +198,6 @@ export default function AdminReportes() {
             </div>
           </div>
 
-          {/* Pie chart: sólo si hay datos */}
           {globalReport.asistidos + globalReport.inasistencias + globalReport.cancelados > 0 ? (
             <div style={{ width: "100%", height: 320 }}>
               <ResponsiveContainer>
