@@ -24,7 +24,6 @@ class InasistenciaViewSet(viewsets.ModelViewSet):
                     Q(turno__profesional__usuario=user) |
                     Q(turno__agenda__profesional__usuario=user)
                 ).distinct()
-                # El profesional solo ve las inasistencias que ya han sido justificadas
                 qs = qs.filter(justificacion__isnull=False)
                 return qs
 
@@ -40,14 +39,12 @@ class InasistenciaViewSet(viewsets.ModelViewSet):
              return Response({"detail": "Acceso denegado."}, status=status.HTTP_403_FORBIDDEN)
         try:
             paciente = Paciente.objects.get(usuario=user)
-            # [CORRECCIÓN CLAVE] Añadimos el segundo criterio de orden por hora
             queryset = Inasistencia.objects.filter(paciente=paciente).order_by('-turno__fecha', '-turno__hora_inicio')
             serializer = self.get_serializer(queryset, many=True)
             return Response(serializer.data)
         except Paciente.DoesNotExist:
             return Response({"detail": "No se encontró un perfil de paciente para este usuario."}, status=status.HTTP_400_BAD_REQUEST)
 
-    # ESTA ES LA ACCIÓN QUE FALTABA O NO ESTABA SIENDO REGISTRADA CORRECTAMENTE
     @action(detail=True, methods=["post"], url_path="justificar")
     def justificar(self, request, pk=None):
         inasistencia = self.get_object()
@@ -62,7 +59,7 @@ class InasistenciaViewSet(viewsets.ModelViewSet):
             return Response({"detail": "Debes proporcionar una justificación."}, status=status.HTTP_400_BAD_REQUEST)
         
         inasistencia.justificacion = justificacion
-        inasistencia.estado_justificacion = "PENDIENTE" # Se mantiene pendiente hasta que el profesional revise
+        inasistencia.estado_justificacion = "PENDIENTE" 
         inasistencia.save()
         
         serializer = self.get_serializer(inasistencia)
