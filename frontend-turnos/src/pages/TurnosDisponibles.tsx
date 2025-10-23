@@ -1,4 +1,3 @@
-// src/pages/TurnosDisponibles.tsx
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
@@ -7,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../api/api";
 import ConfirmationModal from "../components/ConfirmationModal";
 
-// --- Interfaces ---
+
 interface Profesional {
   id: number;
   usuario_nombre: string;
@@ -25,7 +24,7 @@ interface TurnosResponse {
   results: Turno[];
 }
 
-// --- Funciones de Fetching ---
+
 const fetchProfesionales = async (): Promise<Profesional[]> => {
   const { data } = await api.get("/profesionales/");
   return data.results || data;
@@ -91,7 +90,7 @@ const TurnosDisponibles = () => {
   
   const turnos = turnosQuery.data?.results || [];
   const totalTurnos = turnosQuery.data?.count || 0;
-  const pageSize = 20; // Asegúrate de que este valor coincida con el backend
+  const pageSize = 20; 
   const totalPages = Math.ceil(totalTurnos / pageSize);
 
   return (
@@ -138,7 +137,7 @@ const TurnosDisponibles = () => {
             </table>
           ) : ( <p className="mt-6 text-center text-gray-600">No hay turnos disponibles.</p> )}
           
-          {/* [CORRECCIÓN] Se restaura el código completo de la paginación */}
+          
           {totalPages > 1 && (
             <div className="flex justify-center items-center mt-6 gap-2">
               <button disabled={page === 1} onClick={() => setPage(page - 1)} className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50">Anterior</button>
