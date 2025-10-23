@@ -21,7 +21,7 @@ const ProtectedRoute = ({ children, roles }) => {
     }
   }
 
-  // Usuario con rol permitido → renderizar componente
+  
   return children;
 };
 
