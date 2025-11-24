@@ -1,10 +1,9 @@
-// src/components/DashboardLayout.tsx
-import { useState, ReactNode } from 'react'; // Importar useState
+import { useState, ReactNode } from 'react'; 
 import { Link, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import LogoutButton from './LogoutButton';
 
-// --- INTERFACES (Sin cambios) ---
+
 interface NavItem {
   name: string;
   href: string;
@@ -17,7 +16,7 @@ interface DashboardLayoutProps {
   colorClass: string;
 }
 
-// --- ICONOS SVG para el botón de menú (NUEVO) ---
+
 const MenuIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -30,15 +29,15 @@ const CloseIcon = () => (
   </svg>
 );
 
-// --- COMPONENTE PRINCIPAL (Modificado) ---
+
 const DashboardLayout = ({ title, navItems, children, colorClass }: DashboardLayoutProps) => {
   const location = useLocation();
-  // ✅ NUEVO: Estado para controlar la visibilidad del sidebar
+  
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
   return (
     <div className="relative min-h-screen bg-gray-100">
-      {/* ✅ NUEVO: Botón flotante para abrir/cerrar el menú */}
+     
       <button
         onClick={() => setSidebarOpen(!isSidebarOpen)}
         className="fixed top-4 left-4 z-50 p-2 bg-gray-800 text-white rounded-md shadow-lg hover:bg-gray-700 transition-colors"
@@ -47,11 +46,11 @@ const DashboardLayout = ({ title, navItems, children, colorClass }: DashboardLay
         {isSidebarOpen ? <CloseIcon /> : <MenuIcon />}
       </button>
 
-      {/* Sidebar de Navegación (Ahora con clases dinámicas) */}
+      
       <nav 
         className={`fixed top-0 left-0 h-full w-64 p-4 ${colorClass} text-white shadow-xl flex flex-col z-40
                    transform transition-transform duration-300 ease-in-out
-                   ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`} // ✅ Lógica para mostrar/ocultar
+                   ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <h1 className="text-3xl font-bold mt-12 mb-8 border-b border-white/30 pb-4">{title}</h1>
         <ul className="flex-grow space-y-2">
@@ -76,10 +75,10 @@ const DashboardLayout = ({ title, navItems, children, colorClass }: DashboardLay
         </div>
       </nav>
 
-      {/* Contenido Principal (Ahora con clases dinámicas) */}
+     
       <main 
         className={`flex-1 p-8 overflow-y-auto transition-all duration-300 ease-in-out
-                   ${isSidebarOpen ? 'md:ml-64' : 'ml-0'}`} // ✅ Lógica para empujar el contenido
+                   ${isSidebarOpen ? 'md:ml-64' : 'ml-0'}`} 
       >
         {children}
       </main>

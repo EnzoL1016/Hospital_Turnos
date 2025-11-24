@@ -106,10 +106,8 @@ class TurnoViewSet(viewsets.ModelViewSet):
         except Paciente.DoesNotExist:
             return Response({"detail": "No existe un perfil de paciente asociado."}, status=status.HTTP_400_BAD_REQUEST)
         
-        # [CORRECCIÓN 1] Se elimina el filtro de fecha para devolver también el historial
         turnos = Turno.objects.filter(paciente=paciente)
         
-        # [CORRECCIÓN 2] Se añade el segundo criterio de orden por hora descendente
         turnos = turnos.order_by("-fecha", "-hora_inicio")
         
         serializer = self.get_serializer(turnos, many=True)

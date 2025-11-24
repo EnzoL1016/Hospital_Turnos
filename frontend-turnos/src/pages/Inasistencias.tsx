@@ -1,4 +1,3 @@
-// src/pages/Inasistencias.tsx
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
@@ -17,7 +16,7 @@ interface Inasistencia {
   estado_justificacion: "PENDIENTE" | "JUSTIFICADA" | "INJUSTIFICADA";
 }
 
-// --- Lógica de helpers ---
+
 const getEstadoJustificacionColor = (estado?: string) => {
     switch (estado) {
       case "PENDIENTE": return "bg-yellow-100 text-yellow-800";

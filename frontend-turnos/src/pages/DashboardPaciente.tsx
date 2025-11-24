@@ -1,4 +1,3 @@
-// src/pages/DashboardPaciente.tsx
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { CalendarPlus, Calendar, UserX, BarChart3, LoaderCircle } from "lucide-react";
@@ -12,15 +11,15 @@ interface Turno {
 const DashboardPaciente = () => {
   const user = useAuthStore(state => state.user);
 
-  // [CAMBIO] Se añade una query para obtener los turnos y de ahí el nombre del paciente
+
   const { data: turnos, isLoading } = useQuery<Turno[], Error>({
-    queryKey: ['mis-turnos-nombre'], // Una key diferente para no interferir con otras vistas
+    queryKey: ['mis-turnos-nombre'], 
     queryFn: () => api.get<Turno[]>("/turnos/mis-turnos/").then(res => res.data),
-    // Solo se ejecuta si hay un usuario logueado
+
     enabled: !!user,
   });
 
-  // Se extrae el nombre del primer turno, si existe. Si no, se usa el username.
+
   const nombrePaciente = turnos && turnos.length > 0 ? turnos[0].paciente_nombre : user?.username;
 
   return (
@@ -28,19 +27,19 @@ const DashboardPaciente = () => {
       {/* --- Cabecera de Bienvenida --- */}
       <div>
         <h1 className="text-3xl font-bold text-gray-800">
-          {/* Se muestra el nombre del paciente o un saludo genérico mientras carga */}
+          
           Bienvenido, {isLoading ? '...' : nombrePaciente}
         </h1>
         <p className="text-gray-600 mt-1">Aquí puedes acceder a todas las funciones de tu portal.</p>
       </div>
       
-      {/* Se muestra un loader mientras se busca el nombre del paciente */}
+    
       {isLoading ? (
         <div className="flex justify-center items-center h-40">
             <LoaderCircle className="animate-spin text-purple-600" size={40} />
         </div>
       ) : (
-        /* --- Grilla de Tarjetas de Acción --- */
+       
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
           {/* --- Tarjeta: Reservar Turno --- */}

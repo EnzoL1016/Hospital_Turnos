@@ -11,11 +11,7 @@ class ProfesionalViewSet(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated]
 
-
     def destroy(self, request, *args, **kwargs):
-        """
-        Custom destroy method to delete the associated user as well.
-        """
         profesional = self.get_object()
         user = profesional.usuario
         

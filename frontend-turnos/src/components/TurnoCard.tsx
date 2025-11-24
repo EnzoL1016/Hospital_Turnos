@@ -1,7 +1,6 @@
-// src/components/TurnoCard.tsx
 import React from 'react';
 
-// --- Funciones de Ayuda ---
+
 const getEstadoColor = (estado: string) => {
     switch (estado) {
       case "RESERVADO": return "bg-blue-100 text-blue-800";
@@ -16,7 +15,7 @@ const formatearFecha = (fecha: string) => {
     return date.toLocaleDateString("es-AR", { weekday: "long", day: "numeric", month: "long" });
 };
 
-// --- Interfaces ---
+
 interface Turno {
   id: number;
   fecha: string;
@@ -32,7 +31,6 @@ interface TurnoCardProps {
   rolUsuario: string;
   filtroActivo: string;
   onCancelar: (turno: Turno) => void; 
-  // [CORRECCIÓN] Ahora espera el objeto Turno completo y el nuevo estado
   onActualizarEstado: (turno: Turno, nuevoEstado: 'ASISTIO' | 'NO_ASISTIO') => void;
   isProcessing: boolean;
 }
@@ -64,7 +62,7 @@ const TurnoCard = ({ turno, rolUsuario, filtroActivo, onCancelar, onActualizarEs
           )}
           {rolUsuario === 'PROFESIONAL' && turno.estado === 'RESERVADO' && (
             <>
-              {/* [CORRECCIÓN] Ahora se pasa el objeto turno completo */}
+              
               <button onClick={() => onActualizarEstado(turno, 'ASISTIO')} className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600">
                 Marcar Asistió
               </button>

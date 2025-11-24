@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { LoaderCircle } from "lucide-react";
 import api from "../api/api";
 
-// Definimos un tipo para el payload para mayor seguridad
+
 type ProfesionalPayload = {
   username: string;
   password: string;
@@ -34,20 +34,20 @@ const ProfesionalCreate = () => {
     duracion_turno: 30,
   });
 
-  // --- OPTIMIZACIÓN: Usamos useMutation en lugar de useState para loading/error ---
+  // OPTIMIZACIÓN: Usamos useMutation en lugar de useState para loading/error 
   const { mutate: createProfesional, isPending } = useMutation({
     mutationFn: (payload: ProfesionalPayload) => 
-      api.post("/profesionales/registro/", payload), // <-- CORRECCIÓN #1: URL correcta
+      api.post("/profesionales/registro/", payload), 
     onSuccess: () => {
       toast.success("¡Profesional creado exitosamente!");
-      navigate("/admin/profesionales/list"); // <-- CORRECCIÓN #2: Redirección absoluta
+      navigate("/admin/profesionales/list"); 
     },
     onError: (error: any) => {
-      // Intentamos dar un error más específico de la API de Django
+     
       const errorData = error.response?.data;
       let errorMessage = "No se pudo crear el profesional. Inténtalo de nuevo.";
       if (errorData) {
-        // Extrae el primer error de validación que encuentre
+       
         const firstErrorKey = Object.keys(errorData)[0];
         errorMessage = `${firstErrorKey}: ${errorData[firstErrorKey][0]}`;
       }
@@ -79,7 +79,6 @@ const ProfesionalCreate = () => {
 
     const payload = {
       ...formData,
-      // Normalizamos la hora para que siempre envíe los segundos
       horario_inicio: formData.horario_inicio.includes(':00', 1) ? formData.horario_inicio : formData.horario_inicio + ":00",
       horario_fin: formData.horario_fin.includes(':00', 1) ? formData.horario_fin : formData.horario_fin + ":00",
     };

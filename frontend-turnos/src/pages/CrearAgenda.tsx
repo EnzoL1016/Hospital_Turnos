@@ -6,14 +6,14 @@ import { LoaderCircle, CalendarPlus } from "lucide-react";
 import api from "../api/api";
 import useAuthStore from "../store/authStore";
 
-// Interface for the professional data fetched from the API
+
 interface Profesional {
   id: number;
   usuario_nombre: string;
   especialidad: string;
 }
 
-// Form data structure
+
 interface AgendaFormData {
   profesional: string;
   mes: string; // YYYY-MM
@@ -35,30 +35,30 @@ const CrearAgenda = () => {
     duracion_turno: 30,
   });
 
-  // --- OPTIMIZATION: Fetch professionals using useQuery, only for ADMINs ---
+
   const { data: profesionales, isLoading: isLoadingProfesionales } = useQuery<Profesional[], Error>({
     queryKey: ["profesionales"],
     queryFn: () => api.get("/profesionales/").then(res => res.data.results || res.data),
-    // Only run this query if the user is an ADMIN
+  
     enabled: user?.role === "ADMIN",
   });
 
-  // --- OPTIMIZATION: Use useMutation for form submission ---
+
   const { mutate: createAgenda, isPending } = useMutation({
     mutationFn: (payload: any) => api.post("/agendas/", payload),
     onSuccess: () => {
       toast.success("¡Agenda creada exitosamente!");
-      // Invalidate queries to refetch agenda lists
+    
       queryClient.invalidateQueries({ queryKey: ["agendas"] });
       navigate(user?.role === "ADMIN" ? "/admin" : "/profesional/agendas");
     },
     onError: (err: any) => {
       const errorData = err.response?.data;
-      // Handle unique constraint error specifically
+   
       if (errorData?.non_field_errors?.some((e: string) => e.includes("unique"))) {
         toast.error("Ya existe una agenda para este profesional en el mes seleccionado.");
       } else {
-        // Generic error message
+       
         toast.error(errorData?.detail || "No se pudo crear la agenda.");
       }
       console.error("Error creating agenda:", errorData || err);
@@ -82,14 +82,13 @@ const CrearAgenda = () => {
       return;
     }
 
-    // Normalize data before sending to the backend
+
     const payload = {
       profesional: Number(formData.profesional),
-      mes: `${formData.mes}-01`, // Append day to match backend format YYYY-MM-DD
+      mes: `${formData.mes}-01`, 
       horario_inicio: `${formData.horario_inicio}:00`,
       horario_fin: `${formData.horario_fin}:00`,
       duracion_turno: Number(formData.duracion_turno),
-      // Dias no disponibles can be an empty array by default
       dias_no_disponibles: [],
     };
     

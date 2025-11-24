@@ -1,11 +1,10 @@
-// src/store/authStore.ts
 import { create } from "zustand";
 
 export interface User {
   id: number;
   username: string;
   role: "ADMIN" | "PROFESIONAL" | "PACIENTE";
-  profesional_id?: number; // 👈 Agregamos el campo opcional
+  profesional_id?: number; 
 }
 
 interface AuthState {
@@ -16,7 +15,7 @@ interface AuthState {
   logout: () => void;
 }
 
-// Función para obtener datos de localStorage de forma segura
+
 const getStoredState = (): Partial<AuthState> => {
   try {
     const user = localStorage.getItem("user");
@@ -43,14 +42,14 @@ const useAuthStore = create<AuthState>((set) => {
 
     login: (user: User, access: string, refresh: string) => {
       localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("access", access); // Unificado
+      localStorage.setItem("access", access); 
       localStorage.setItem("refreshToken", refresh);
       set({ user, accessToken: access, refreshToken: refresh });
     },
 
     logout: () => {
       localStorage.removeItem("user");
-      localStorage.removeItem("access"); // Unificado
+      localStorage.removeItem("access"); 
       localStorage.removeItem("refreshToken");
       set({ user: null, accessToken: null, refreshToken: null });
     },

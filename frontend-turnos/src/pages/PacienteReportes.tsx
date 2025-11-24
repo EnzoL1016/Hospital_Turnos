@@ -1,4 +1,3 @@
-// src/pages/PacienteReportes.tsx
 import React, { useEffect, useState } from "react";
 import api from "../api/api";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
@@ -27,7 +26,7 @@ export default function PacienteReportes() {
       setErrorMsg("");
       setHistorial(null);
 
-      // Intentos: primero mi-historial, si 404 -> mi-reporte
+  
       const endpoints = ["/reportes/mi-historial/", "/reportes/mi-reporte/"];
 
       for (let i = 0; i < endpoints.length; i++) {
@@ -39,7 +38,7 @@ export default function PacienteReportes() {
           setLoading(false);
           return;
         } catch (err: any) {
-          // Loguear info útil para depuración
+        
           console.warn(`[PacienteReportes] Error en ${ep}:`, {
             status: err?.response?.status,
             url: err?.config?.url,
@@ -47,13 +46,12 @@ export default function PacienteReportes() {
             responseData: err?.response?.data,
           });
 
-          // Si es 404 probamos el siguiente endpoint (fallback)
+       
           if (err?.response?.status === 404) {
-            // continuar al siguiente endpoint
             continue;
           }
 
-          // Si es 403 -> mostrar mensaje dedicado
+       
           if (err?.response?.status === 403) {
             setErrorMsg(
               "Acceso denegado: este informe solo está disponible para pacientes autenticados."
@@ -62,21 +60,21 @@ export default function PacienteReportes() {
             return;
           }
 
-          // Si es 400 -> perfil no encontrado
+      
           if (err?.response?.status === 400) {
             setErrorMsg("No se encontró un perfil de paciente asociado a este usuario.");
             setLoading(false);
             return;
           }
 
-          // Si no hubo response (network / CORS / preflight) o status distinto -> mostrar genérico
+         
           if (!err?.response) {
             setErrorMsg("Error de red o CORS. Revisá la consola del navegador para más detalles.");
             setLoading(false);
             return;
           }
 
-          // Otros códigos: mostrar mensaje genérico pero loguear detalle
+        
           setErrorMsg(
             "Ocurrió un error al cargar tu historial de turnos. Revisá la consola para más información."
           );
@@ -85,7 +83,7 @@ export default function PacienteReportes() {
         }
       }
 
-      // Si terminamos el loop sin éxito y sin un error ya seteado, mostrar 404-friendly
+      
       setErrorMsg("No se encontró el endpoint de historial en el servidor (404).");
       setLoading(false);
     };

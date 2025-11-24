@@ -8,7 +8,7 @@ class InasistenciaSerializer(serializers.ModelSerializer):
     profesional_nombre = serializers.CharField(
         source="turno.profesional.usuario.username", read_only=True
     )
-    # 👇 Corrección: ahora apunta a turno.fecha y turno.hora_inicio
+    
     fecha = serializers.DateField(
         source="turno.fecha", format="%Y-%m-%d", read_only=True
     )

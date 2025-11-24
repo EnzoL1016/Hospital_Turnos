@@ -4,9 +4,9 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import { Trash2, Edit, UserPlus, LoaderCircle } from "lucide-react";
 import api from "../api/api";
-import Modal from "../components/Modal"; // Asumo que tienes un componente Modal
+import Modal from "../components/Modal"; 
 
-// The interface remains the same
+
 interface Profesional {
   id: number;
   matricula: string;
@@ -21,29 +21,28 @@ const ProfesionalesList = () => {
   const [especialidadFiltro, setEspecialidadFiltro] = useState("");
   const [profesionalToDelete, setProfesionalToDelete] = useState<Profesional | null>(null);
 
-  // --- OPTIMIZATION: Fetching data with useQuery ---
+
   const { data: profesionales = [], isLoading, error } = useQuery<Profesional[], Error>({
     queryKey: ["profesionales"],
     queryFn: () => api.get('/profesionales/').then(res => res.data.results || res.data),
   });
 
-  // --- OPTIMIZATION: Deleting with useMutation for better state management ---
   const { mutate: deleteProfesional, isPending: isDeleting } = useMutation({
     mutationFn: (id: number) => api.delete(`/profesionales/${id}/`),
     onSuccess: () => {
       toast.success("Profesional eliminado exitosamente");
-      // Invalidate the query to refetch the list automatically
+     
       queryClient.invalidateQueries({ queryKey: ["profesionales"] });
-      setProfesionalToDelete(null); // Close modal on success
+      setProfesionalToDelete(null); 
     },
     onError: (err: any) => {
       console.error("Error eliminando profesional:", err);
       toast.error("No se pudo eliminar el profesional.");
-      setProfesionalToDelete(null); // Close modal on error
+      setProfesionalToDelete(null); 
     },
   });
 
-  // --- UX IMPROVEMENT: Confirmation Modal ---
+ 
   const handleOpenDeleteModal = (profesional: Profesional) => {
     setProfesionalToDelete(profesional);
   };
@@ -54,7 +53,7 @@ const ProfesionalesList = () => {
     }
   };
 
-  // Memoized derived state for performance
+ 
   const especialidades = Array.from(new Set(profesionales.map((p) => p.especialidad)));
   
   const filtrados = especialidadFiltro
@@ -130,7 +129,7 @@ const ProfesionalesList = () => {
         </table>
       </div>
       
-      {/* --- Confirmation Modal for Deletion --- */}
+      
       {profesionalToDelete && (
         <Modal
           isOpen={!!profesionalToDelete}

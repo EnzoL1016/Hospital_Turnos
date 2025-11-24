@@ -1,13 +1,9 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from ..models import Agenda
-from core.serializers.AgendaSerializer import AgendaSerializer # Asegúrate que la ruta de importación sea correcta
+from core.serializers.AgendaSerializer import AgendaSerializer 
 
 class AgendaViewSet(viewsets.ModelViewSet):
-    """
-    Gestiona las agendas. La lógica de creación de turnos se delega
-    al AgendaSerializer, como en la versión funcional de referencia.
-    """
     serializer_class = AgendaSerializer
     permission_classes = [IsAuthenticated]
 

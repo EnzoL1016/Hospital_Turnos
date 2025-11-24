@@ -1,4 +1,3 @@
-// src/pages/ProfesionalReportes.tsx
 import { useEffect, useState } from "react";
 import api from "../api/api";
 import {
@@ -26,7 +25,7 @@ interface Agenda {
   mes: string;
 }
 
-// Función auxiliar para formatear la fecha
+
 const formatMonthFromYYYYMMDD = (mesStr: string) => {
   if (!mesStr) return "";
   const date = new Date(mesStr + "T00:00:00");

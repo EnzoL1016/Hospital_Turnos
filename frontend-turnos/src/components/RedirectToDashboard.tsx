@@ -1,8 +1,6 @@
-// src/components/RedirectToDashboard.tsx
-
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuthStore from "../store/authStore.ts"; // Importamos el archivo .ts
+import useAuthStore from "../store/authStore.ts"; 
 
 const RedirectToDashboard = () => {
   const { user } = useAuthStore();

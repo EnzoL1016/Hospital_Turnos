@@ -1,4 +1,4 @@
-// src/api/api.ts
+
 import axios from "axios";
 
 const api = axios.create({
@@ -10,7 +10,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const access = localStorage.getItem("access"); // 👈 clave única
+    const access = localStorage.getItem("access");
     if (access) {
       config.headers.Authorization = `Bearer ${access}`;
     }
@@ -35,10 +35,10 @@ api.interceptors.response.use(
           });
 
           if (res.status === 200) {
-            // 👇 usamos siempre "access"
+            
             localStorage.setItem("access", res.data.access);
 
-            // Reintentamos con el nuevo token
+           
             originalRequest.headers.Authorization = `Bearer ${res.data.access}`;
             return axios(originalRequest);
           }
