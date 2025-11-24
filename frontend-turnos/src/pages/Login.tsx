@@ -11,17 +11,42 @@ const Login = () => {
   const navigate = useNavigate();
   const login = useAuthStore((state) => state.login);
   useEffect(() => {
-    const access = localStorage.getItem("access");
-    const user = localStorage.getItem("user");
-    if (access && user) {
-      const { role } = JSON.parse(user);
-      if (role === "ADMIN") navigate("/admin/dashboard");
-      else if (role === "PROFESIONAL") navigate("/profesional/dashboard");
-      else if (role === "PACIENTE") navigate("/paciente/dashboard");
-      else navigate("/");
-    } else {
-      setCheckingAuth(false);
-    }
+    const checkAuth = () => {
+      const access = localStorage.getItem("access");
+      const user = localStorage.getItem("user");
+
+      if (access && user) {
+        // Intentar verificar expiración básica del token (JWT)
+        try {
+          const payload = JSON.parse(atob(access.split('.')[1]));
+          const now = Date.now() / 1000;
+          
+          if (payload.exp && payload.exp < now) {
+            // Token expirado, limpiar y quedarse en login
+            console.log("Token expirado detectado en Login, limpiando...");
+            localStorage.removeItem("access");
+            localStorage.removeItem("refreshToken");
+            localStorage.removeItem("user");
+            setCheckingAuth(false);
+            return;
+          }
+        } catch (e) {
+          // Si falla el decodificado, asumir inválido
+          console.error("Error decodificando token en Login", e);
+          setCheckingAuth(false);
+          return;
+        }
+
+        const { role } = JSON.parse(user);
+        if (role === "ADMIN") navigate("/admin/dashboard");
+        else if (role === "PROFESIONAL") navigate("/profesional/dashboard");
+        else if (role === "PACIENTE") navigate("/paciente/dashboard");
+        else navigate("/");
+      } else {
+        setCheckingAuth(false);
+      }
+    };
+    checkAuth();
   }, [navigate]);
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

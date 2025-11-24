@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
-from django.utils.timezone import now
+from django.utils.timezone import now, localtime
 from ..models import Turno, Paciente, Inasistencia
 from core.serializers.TurnoSerializer import TurnoSerializer
 from rest_framework.pagination import PageNumberPagination
@@ -20,10 +20,17 @@ class TurnoViewSet(viewsets.ModelViewSet):
     pagination_class = DefaultPagination
 
     def get_queryset(self):
-        # ... (Este método se mantiene igual, su orden ascendente es correcto para buscar turnos disponibles)
         user = self.request.user
-        hoy = now().date()
-        qs = Turno.objects.filter(fecha__gte=hoy)
+        # Convertimos UTC a hora local (Argentina)
+        ahora_dt = localtime(now())
+        hoy = ahora_dt.date()
+        ahora_time = ahora_dt.time()
+        
+        # Filtramos turnos: Fecha futura O (Fecha hoy Y Hora futura)
+        qs = Turno.objects.filter(
+            Q(fecha__gt=hoy) | Q(fecha=hoy, hora_inicio__gt=ahora_time)
+        )
+
         if getattr(user, "rol", None) == "PROFESIONAL":
             qs = qs.filter(agenda__profesional__usuario=user)
         elif getattr(user, "rol", None) == "PACIENTE":
@@ -50,21 +57,28 @@ class TurnoViewSet(viewsets.ModelViewSet):
             qs = qs.filter(estado=estado)
         return qs.order_by("fecha", "hora_inicio")
 
-    @action(detail=False, methods=["get"], url_path=r"por-agenda/(?P<agenda_id>[^/.]+)")
+    @action(detail=False, methods=["get"], url_path=r"por-agenda/(?P<agenda_id>\d+)")
     def por_agenda(self, request, agenda_id=None):
-        # ... (Este método también se mantiene igual, el orden ascendente es correcto para la agenda del profesional)
         user = request.user
-        hoy = now().date()
+        # Convertimos UTC a hora local (Argentina)
+        ahora_dt = localtime(now())
+        hoy = ahora_dt.date()
+        ahora_time = ahora_dt.time()
+
+        # Base query con filtro de tiempo
+        qs = Turno.objects.filter(
+            Q(fecha__gt=hoy) | Q(fecha=hoy, hora_inicio__gt=ahora_time)
+        ).filter(agenda_id=agenda_id)
+
         if getattr(user, "rol", None) == "PROFESIONAL" or getattr(user, "rol", None) == "ADMIN":
-            qs = Turno.objects.filter(agenda_id=agenda_id, fecha__gte=hoy).order_by("fecha", "hora_inicio")
+            qs = qs.order_by("fecha", "hora_inicio")
         else:
-            qs = Turno.objects.filter(agenda_id=agenda_id, fecha__gte=hoy, estado="DISPONIBLE", paciente__isnull=True).order_by("fecha", "hora_inicio")
+            qs = qs.filter(estado="DISPONIBLE", paciente__isnull=True).order_by("fecha", "hora_inicio")
         serializer = self.get_serializer(qs, many=True)
         return Response(serializer.data)
 
     @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
     def cancelar(self, request, pk=None):
-        # ... (Sin cambios aquí)
         turno = self.get_object()
         user = request.user
         if getattr(user, "rol", None) != "PACIENTE":
@@ -102,7 +116,6 @@ class TurnoViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def partial_update(self, request, *args, **kwargs):
-        # ... (Sin cambios aquí)
         turno = self.get_object()
         user = request.user
         if getattr(user, "rol", None) == "PACIENTE":
@@ -160,7 +173,6 @@ class TurnoViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["patch"], permission_classes=[IsAuthenticated])
     def marcar_inasistencia(self, request, pk=None):
-        # ... (Sin cambios aquí)
         turno = self.get_object()
         user = request.user
         if getattr(user, "rol", None) != "PROFESIONAL":

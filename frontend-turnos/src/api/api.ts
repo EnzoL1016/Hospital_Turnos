@@ -44,9 +44,15 @@ api.interceptors.response.use(
           }
         } catch (refreshError) {
           console.error("Error refrescando token:", refreshError);
+          localStorage.removeItem("user");
+          localStorage.removeItem("access");
+          localStorage.removeItem("refreshToken");
           window.location.href = "/login";
         }
       } else {
+        localStorage.removeItem("user");
+        localStorage.removeItem("access");
+        localStorage.removeItem("refreshToken");
         window.location.href = "/login";
       }
     }
