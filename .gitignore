@@ -1,0 +1,22 @@
+# --- General ---
+.DS_Store
+Thumbs.db
+
+# --- Seguridad (¡MUY IMPORTANTE!) ---
+.env
+*.env
+
+# --- Python / Django (Backend) ---
+backend/venv/
+backend/env/
+*.pyc
+__pycache__/
+db.sqlite3
+/backend/staticfiles/
+
+# --- Node / React (Frontend) ---
+frontend-turnos/node_modules/
+frontend-turnos/dist/
+frontend-turnos/build/
+.vscode/
+.idea/
