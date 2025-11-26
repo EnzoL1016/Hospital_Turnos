@@ -1,8 +1,10 @@
-
 import axios from "axios";
 
+// Definimos la URL base aca para usarla en ambos lugares y evitar errores
+const API_BASE_URL = "https://hospital-backend-vo2y.onrender.com/api";
+
 const api = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -30,7 +32,8 @@ api.interceptors.response.use(
 
       if (refreshToken) {
         try {
-          const res = await axios.post("http://localhost:8000/api/auth/refresh/", {
+          // [CORRECCIÓN] Usamos la URL de producción definida arriba
+          const res = await axios.post(`${API_BASE_URL}/auth/refresh/`, {
             refresh: refreshToken,
           });
 
