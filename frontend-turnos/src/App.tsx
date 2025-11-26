@@ -12,7 +12,7 @@ import TurnosDisponibles from "./pages/TurnosDisponibles";
 import VistaDeTurnos from "./pages/VistaDeTurnos.tsx";
 import Inasistencias from "./pages/Inasistencias.tsx";
 import InasistenciasProfesional from "./pages/InasistenciasProfesional.tsx";
-import PublicRoute from "./components/PublicRoute";
+import PublicRoute from "./components/publicRoute";
 import React, { Suspense } from "react";
 
 // Layout
